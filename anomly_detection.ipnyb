@@ -1,0 +1,22 @@
+import matplotlib.pyplot as plt
+from src.data_prep import generate_sensor_data
+from src.features import add_features
+from src.model import train_iforest
+
+#Generate data
+df = generate_sensor_data()
+
+#Feature engineering
+df = add_features(df)
+
+#Training model
+df, model = train_iforest(df)
+
+#Ploting results
+anomalies = df[df["anomaly"] == -1]
+
+plt.figure(figsize=(12,5))
+plt.plot(df["time"], df["temperature"], label="Temperature")
+plt.scatter(anomalies["time"], anomalies["temperature"], color="red", label="Anomalies")
+plt.legend()
+plt.show()
